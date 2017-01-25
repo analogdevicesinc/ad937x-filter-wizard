@@ -2,17 +2,29 @@ function writeProfilesToFile(mykonos_config, filename)
     profileFileVersion = 0;  %update this if format of this file changes
 
     fd = fopen(filename, 'w');
+    profilename = strtok(filename,'.');
         
     fprintf(fd, '%s%d%s%d%s%3.3f%s\n', '<profile AD9371 version=', profileFileVersion, ' name=Rx ', mykonos_config.Rx.RFBW_MHz, ', IQrate ', mykonos_config.Rx.output_rate_MHz, '>');
     
     % Write Clocks structure
     fprintf(fd, '%s\n', ' <clocks>');  
     devclk = mykonos_config.CLK.selectedDEV_CLK_rate_MHz;        
-    fprintf(fd, '%s%d%s\n', '  <deviceClock_kHz=', devclk * 1000, '>'); 
-    fprintf(fd, '%s%d%s\n', '  <clkPllVcoFreq_kHz=', mykonos_config.CLK.VCO_CLK_rate_MHz * 1000, '>');
+    fprintf(fd, '%s%d%s\n', '  <deviceClock_kHz=', cast(devclk * 1000, 'uint32'), '>'); 
+    fprintf(fd, '%s%d%s\n', '  <clkPllVcoFreq_kHz=', cast(mykonos_config.CLK.VCO_CLK_rate_MHz * 1000, 'uint32'), '>');
     fprintf(fd, '%s%d%s\n', '  <clkPllVcoDiv=', mykonos_config.CLK.VCO_CLK_divider, '>');      
-    fprintf(fd, '%s%d%s\n', '  <clkPllHsDiv=', mykonos_config.CLK.HS_CLK_divider, '>');      
+    fprintf(fd, '%s%d%s\n', '  <clkPllHsDiv=', mykonos_config.CLK.HS_CLK_divider, '>');
+    fprintf(fd, '%s%d%s\n', '  <clkPllRefClkDiv=', mykonos_config.CLK.REF_CLK_divider, '>');
     fprintf(fd, '%s\n', ' </clocks>');
+    fprintf(fd, '\n');
+    
+    fprintf(fd, '%s\n', ' <AD9528config>');      
+    fprintf(fd, '%s%d%s\n', '  <enable=', mykonos_config.CLK.VCOX_en, '>'); 
+    fprintf(fd, '%s%d%s\n', '  <M1_Div=', mykonos_config.CLK.VCOX_M1(mykonos_config.CLK.VCOX_selected_index), '>');
+    fprintf(fd, '%s%d%s\n', '  <N2_Div=', mykonos_config.CLK.VCOX_N2(mykonos_config.CLK.VCOX_selected_index), '>');      
+    fprintf(fd, '%s%d%s\n', '  <OUT_Div=', mykonos_config.CLK.VCOX_out_div(mykonos_config.CLK.VCOX_selected_index), '>');
+    fprintf(fd, '%s\n', ' </AD9528config>');
+    
+    
     
     % Write Rx Settings structure
     writeRxProfileToFile(mykonos_config, fd);
@@ -25,6 +37,9 @@ function writeProfilesToFile(mykonos_config, filename)
     
     % Write Tx Settings structure
     writeTxProfileToFile(mykonos_config, fd);
+    
+    % Write ADC responses
+    writeADCprofiles(mykonos_config, profilename)
     
     fprintf(fd, '%s\n', '</profile>');
     fclose(fd);
@@ -82,8 +97,8 @@ function writeRxProfileToFile(mykonos_config, fd)
     fprintf(fd, '%s\n', '  </filter>');
     
     fprintf(fd, '\n');
-    fprintf(fd, '%s%d%s\n', '  <adc-profile num=', numel(mykonos_config.Rx.ADC_codes), '>');
-    for i = 1:1:numel(mykonos_config.Rx.ADC_codes)
+    fprintf(fd, '%s\n', '  <adc-profile num=16>');
+    for i = 1:16
         fprintf(fd, '  %d\n', mykonos_config.Rx.ADC_codes(i));
     end
     fprintf(fd, '%s\n', '  </adc-profile>');
@@ -143,11 +158,20 @@ function writeObsRxProfileToFile(mykonos_config, fd)
     fprintf(fd, '%s\n', '  </filter>');
     
     fprintf(fd, '\n');
-    fprintf(fd, '%s%d%s\n', '  <adc-profile num=', numel(mykonos_config.ORx.ADC_codes), '>');
-    for i = 1:1:numel(mykonos_config.ORx.ADC_codes)
+    fprintf(fd, '%s\n', '  <adc-profile num=16>');
+    for i = 1:16
         fprintf(fd, '  %d\n', mykonos_config.ORx.ADC_codes(i));
     end
     fprintf(fd, '%s\n', '  </adc-profile>');
+    
+    % writing lpbk ADC codes here
+    fprintf(fd, '\n');
+    fprintf(fd, '%s\n', '  <lpbk-adc-profile num=16>');
+    for i = 1:16
+        fprintf(fd, '  %d\n', mykonos_config.ORx.LPBK_ADC_codes(i));
+    end
+    fprintf(fd, '%s\n', '  </lpbk-adc-profile>');
+    
     fprintf(fd, '%s\n', ' </obs>');
     
 function writeSnifferRxProfileToFile(mykonos_config, fd) 
@@ -207,8 +231,8 @@ function writeSnifferRxProfileToFile(mykonos_config, fd)
     fprintf(fd, '%s\n', '  </filter>');
     
     fprintf(fd, '\n');
-    fprintf(fd, '%s%d%s\n', '  <adc-profile num=', numel(mykonos_config.Snf.ADC_codes), '>');
-    for i = 1:1:numel(mykonos_config.Snf.ADC_codes)
+    fprintf(fd, '%s\n', '  <adc-profile num=16>');
+    for i = 1:16
         fprintf(fd, '  %d\n', mykonos_config.Snf.ADC_codes(i));
     end
     fprintf(fd, '%s\n', '  </adc-profile>');
@@ -263,3 +287,26 @@ function writeTxProfileToFile(mykonos_config, fd)
     
     fprintf(fd, '%s\n', '  </filter>');
     fprintf(fd, '%s\n', ' </tx>');
+    
+function writeADCprofiles(mykonos_config, profile)
+
+    rx_file = strcat(profile,'_rxadc.txt');
+    orx_file = strcat(profile,'_orxadc.txt');
+    snrx_file = strcat(profile,'_snfadc.txt');
+    fd = fopen(rx_file, 'w');
+    for i = 1:1:8192
+        fprintf(fd,'%0.2f\t%f\n',mykonos_config.Rx.ADC_freq(i),dbv(abs(mykonos_config.Rx.ADC_resp(i))));
+    end
+    fclose(fd);
+    fd = fopen(orx_file, 'w');
+    for i = 1:1:8192
+        fprintf(fd,'%0.2f\t%f\n',mykonos_config.ORx.ADC_freq(i),dbv(abs(mykonos_config.ORx.ADC_resp(i))));
+    end
+    fclose(fd);
+    if (mykonos_config.Snf.profileEnabled == 1)
+        fd = fopen(snrx_file, 'w');
+        for i = 1:1:8192
+            fprintf(fd,'%0.2f\t%f\n',mykonos_config.Snf.ADC_freq(i),dbv(abs(mykonos_config.Snf.ADC_resp(i))));
+        end
+        fclose(fd);
+    end

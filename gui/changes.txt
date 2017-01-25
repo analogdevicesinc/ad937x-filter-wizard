@@ -1,0 +1,16 @@
+- Added a function in Advanced tab to redraw the figure
+- Added a uiwait statement and a CloseRequestFcn to safely resume or close the figure.
+- Disabled zoom on the radioverse logo
+- Modified gui to include a combo box to choose reference clock divider and an edit box for VCOX frequency
+- Added a condition in outputs to file function to proceed only if a profile is generated and device clock chosen
+- Added functionality to choose device clocks from AD9528. The settings for AD9528 are output in the profiles.
+- The RefClock calculation was updated in the datapath config file to allow a wider range of values.
+- The minimum VCO frequency check was updated from 6GHz to 6.25GHz
+
+
+- Added 'advanced setting' to be able to manually choose the decimation mode and number of coefficients.
+- Added additional fields 'Advanced' & 'force_pfir' to Rx, ORx, and Snf to support the advanced settings.
+- Added a check to the limit the maximum decimation in Rx and Snf to 40.
+- Modified the offset calculation for the generate_RxORxPFIR
+- Added functionality to write the ADC STF of Rx, ORx and Snf in writeProfilesToFile
+- writeProfilesToFile now produces 3 additional files. <profile>_rxadc.txt, <profile>_orxadc.txt and <profile>_snfadc.txt which contain frequency and STF. Data is tab seperated and of floating point format.

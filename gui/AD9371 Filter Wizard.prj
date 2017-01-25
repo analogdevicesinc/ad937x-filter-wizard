@@ -1,0 +1,136 @@
+<deployment-project plugin="plugin.apptool" plugin-version="1.0">
+  <configuration build-checksum="3230610595" file="C:\Users\abaskar\Documents\mykprofilegen\code\gui\AD9371 Filter Wizard.prj" location="C:\Users\abaskar\Documents\mykprofilegen\code\gui" name="AD9371 Filter Wizard" target="target.mlapps" target-name="Package App">
+    <param.appname>AD9371 Filter Wizard</param.appname>
+    <param.authnamewatermark>Analog Devices</param.authnamewatermark>
+    <param.email />
+    <param.company>Analog Devices, Inc</param.company>
+    <param.icon />
+    <param.icons />
+    <param.summary>Generates Rx/Tx/ObservationRx and Sniffer filters and channel configurations for the AD9371 Integrated Transceiver.</param.summary>
+    <param.description />
+    <param.screenshot>${PROJECT_ROOT}\AD9371-Filter-Wizard-Splash-Screen.jpg</param.screenshot>
+    <param.version>1.7</param.version>
+    <param.products.name>
+      <item>MATLAB</item>
+      <item>Control System Toolbox</item>
+      <item>Signal Processing Toolbox</item>
+    </param.products.name>
+    <param.products.id>
+      <item>'1'</item>
+      <item>'3'</item>
+      <item>'8'</item>
+    </param.products.id>
+    <param.products.version>
+      <item>8.4</item>
+      <item>9.8</item>
+      <item>6.22</item>
+    </param.products.version>
+    <param.platforms />
+    <param.output>${PROJECT_ROOT}\App Name.mlappinstall</param.output>
+    <param.guid>7c21880b-aee7-433c-9991-a20c191d0f00</param.guid>
+    <unset>
+      <param.email />
+      <param.icon />
+      <param.icons />
+      <param.description />
+      <param.platforms />
+      <param.output />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}\gui.m</file>
+    </fileset.main>
+    <fileset.depfun>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\ABCDpolydata.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\designADCpoly.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\evalADCpoly.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\evalpoly.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\implementADCpoly.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\insertBits.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\makeADCpoly.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\MykonosADCResponse.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\openbytes.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\common\bround.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\common\filterplot.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\common\filterplot_fft.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\calculateTF.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\dbp.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\dbv.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\ds_f1f2.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\ds_synNTFobj1.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\evalMixedTF.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\evalRPoly.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\evalTF.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\evalTFP.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\mapCtoD.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\padb.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\padr.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\padt.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\partitionABCD.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\rmsGain.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\synthesizeNTF0.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\undbv.m</file>
+      <file>${PROJECT_ROOT}\Advanced.fig</file>
+      <file>${PROJECT_ROOT}\Advanced.m</file>
+      <file>${PROJECT_ROOT}\gui.fig</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\profilegen\AD9528_rates.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\profilegen\generate_LPBK_ADC_codes.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\profilegen\generate_Mykonos_datapath_config.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\profilegen\generate_RxORxPFIR.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\profilegen\generate_TxPFIR.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\profilegen\init_Mykonos_config.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\profilegen\writeProfilesToFile.m</file>
+    </fileset.depfun>
+    <fileset.resources>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\ds_optzeros.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\realizeNTF.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\stuffABCD.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\synthesizeNTF.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\synthesizeNTF1.m</file>
+      <file>${PROJECT_ROOT}\ADILogo.png</file>
+      <file>${PROJECT_ROOT}\RadioVerse-RGB-FullColor.png</file>
+    </fileset.resources>
+    <fileset.package />
+    <build-deliverables>
+      <file location="C:\Users\abaskar\Documents\mykprofilegen\code\gui" name="App Name.mlappinstall" optional="false">C:\Users\abaskar\Documents\mykprofilegen\code\gui\App Name.mlappinstall</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2014b</root>
+      <toolboxes>
+        <toolbox name="fixedpoint" />
+        <toolbox name="embeddedcoder" />
+        <toolbox name="matlabcoder" />
+      </toolboxes>
+      <toolbox>
+        <fixedpoint>
+          <enabled>true</enabled>
+        </fixedpoint>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>6.1</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

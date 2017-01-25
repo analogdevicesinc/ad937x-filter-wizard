@@ -29,12 +29,43 @@ adc_Fs = rxorx_config.ADC_clk_rate_MHz*MHz;
 
 pfir_in_rate_Hz = output_rate_Hz * pfir_decimation;
 
-if output_rate_Hz > Fp_Hz*4.0
-    Fstop_offset = Fp_Hz;
-elseif output_rate_Hz > Fp_Hz*3.2
-    Fstop_offset = Fp_Hz*0.5;       % This is additional BW required for stopband if we think its of benefit
+
+%% Setting the Number of Taps Based On The Decimation Rate 
+if isfield(rxorx_config,'force_pfir') == 0
+    force_pfir = 0;
 else
+    force_pfir = rxorx_config.force_pfir;
+end
+if rxorx_config.Advanced == 1 && force_pfir
+    N = rxorx_config.pfir_no_of_coefs;
+else
+    if ( ( pfir_decimation == 2 || pfir_decimation == 4 ) && RHB1_enable == 1)
+        N = 72;
+    elseif (pfir_decimation == 2 || RHB1_enable == 1)
+        N = 48;
+    else
+        N = 24;
+    end
+end
+
+offset_parameter_lowOrd = 3;
+offset_parameter_highOrd = 2.5;
+offset_mult = 1.5;
+
+if N > 48
+    Fstop_offset = output_rate_Hz - offset_parameter_highOrd*Fp_Hz*(offset_mult^log2(max(pfir_decimation/2,1)));
+elseif N <= 48
+    Fstop_offset = output_rate_Hz - offset_parameter_lowOrd*Fp_Hz*(offset_mult^log2(max(pfir_decimation/2,1)));
+end
+if pfir_decimation == 1
+    Fstop_offset = Fstop_offset/2;
+end
+if Fstop_offset < 0
     Fstop_offset = 0;
+end
+
+if pfir_decimation == 1 && Fstop_offset == 0
+    N = N-1;
 end
 
 % Calculate the decimation before the PFIR to calculate
@@ -59,7 +90,7 @@ dec5 =2^(-13) * [18 35 56 72 70 28 -38 -126 -209 -244 -184 -20 256 612 976 1273 
 dec5hr = 2^(-15) * [-64 -165 -305 -442 -499 -273 280 1208 2433 3762 4866 5503 5503 4866 3762 2433 1208 280 -273 -499 -442 -305 -165 -64];
 
 %% Calculate Sample Rates for Each Filter Output
-fpass = [0 Fp_Hz]
+fpass = [0 Fp_Hz];
 if dec5_enable == 1
     Fs_hb2dec5 = adc_Fs/5;
     hb2dec5_stop = [adc_Fs/5-Fp_Hz adc_Fs/5+Fp_Hz 2*adc_Fs/5-Fp_Hz 2*adc_Fs/5+Fp_Hz];
@@ -83,12 +114,16 @@ end
 if pfir_decimation == 4
     Fs_pfirout = Fs_hb1/4;
     pfir_stop = [Fs_pfirout-Fp_Hz-Fstop_offset Fs_pfirout+Fp_Hz Fs_pfirout*2-Fp_Hz Fs_pfirout*2+Fp_Hz hb1_stop];
+    %Stop band lines for plot without Fstop_offset
+    pfir_stop_lines = [Fs_pfirout-Fp_Hz Fs_pfirout+Fp_Hz Fs_pfirout*2-Fp_Hz Fs_pfirout*2+Fp_Hz hb1_stop]; 
 elseif pfir_decimation == 2
     Fs_pfirout = Fs_hb1/2;
     pfir_stop = [Fs_pfirout-Fp_Hz-Fstop_offset Fs_pfirout+Fp_Hz hb1_stop];
+    pfir_stop_lines = [Fs_pfirout-Fp_Hz Fs_pfirout+Fp_Hz hb1_stop];
 else
     Fs_pfirout = Fs_hb1;
     pfir_stop = hb1_stop-Fstop_offset;
+    pfir_stop_lines = hb1_stop;
 end
 
 
@@ -98,7 +133,7 @@ if ( rxorx_config.tia_fc_MHz == 0 )
         if (Fp_Hz > 100*MHz)
             tia_Fc = 100*MHz;
         elseif (Fp_Hz < 20*MHz)
-            tia_Fc = 20*MHz
+            tia_Fc = 20*MHz;
         else
             tia_Fc = Fp_Hz;
         end
@@ -220,21 +255,17 @@ elseif pfir_decimation == 2
     pfir_sb0_response = zeros(1,length(fgrid_sb0))*rxorx_config.pfir_stopband_weight;
     wt_sb0 = absHBout(pfir_stopbands(1):pfir_stopbands(2))*rxorx_config.pfir_stopband_weight;
 else
-    pfir_stopuse = [(pfir_in_rate_Hz/2 - 1) pfir_in_rate_Hz/2];
+    pfir_stopuse = [(pfir_in_rate_Hz/2 - Fstop_offset) pfir_in_rate_Hz/2];
     pfir_stopbands = round(pfir_stopuse/(pfir_in_rate_Hz)*fftlen/dec_before_pfir);
     fgrid_sb0 = fgrid(pfir_stopbands(1):pfir_stopbands(2));
-    pfir_sb0_response = ones(1,length(fgrid_sb0))*pfir_pb_response(end);
-    wt_sb0 = ones(1,length(fgrid_sb0))*rxorx_config.pfir_stopband_weight;
+    if Fstop_offset == 0
+        pfir_sb0_response = ones(1,length(fgrid_sb0))*pfir_pb_response(end);
+    else
+        pfir_sb0_response = zeros(1,length(fgrid_sb0));
+    end
+    wt_sb0 = ones(length(fgrid_sb0),1)*rxorx_config.pfir_stopband_weight;
 end
 
-%% Setting the Number of Taps Based On The Decimation Rate 
-if ( ( pfir_decimation == 2 || pfir_decimation == 4 ) && RHB1_enable == 1)
-    N = 72;
-elseif (pfir_decimation == 2 || RHB1_enable == 1)
-    N = 48;
-else
-    N = 23;
-end
 
 %% Plotting PFIR Passband and Stopband Response
 if debugplot == 1
@@ -270,7 +301,7 @@ Hd = design(d,'equiripple','B1Weights',wt_pb,'B2Weights',transpose(wt_sb0),'Syst
 pfir = Hd.Numerator;
 
 if N == 23
-    Np = 24
+    Np = 24;
     pfir = [pfir 0];
 else
     Np = N;
@@ -310,12 +341,14 @@ end
 
 %% Combine the PFIR Response With the Other Filters for Total System Response
 [PFIR,f] = freqz(pfir,1,floor(fftlen/dec_before_pfir),'whole');
+
 PFIRtemp = [];
 for iter = 1:dec_before_pfir
     PFIRtemp = [PFIRtemp; PFIR];
 end
 PFIRuse = [PFIRtemp(1:end); PFIRtemp(1:10)];
-size(PFIRuse),size(HBOUTanalog);
+size(PFIRuse);
+size(HBOUTanalog);
 
 % Multiplying the HB output with the PFIR output for HBoutanalog data
 FINAL = HBOUTanalog.*transpose(PFIRuse(1:length(HBOUTanalog)));
@@ -339,25 +372,43 @@ else
     cla;
     
 end
+
+              %R    G    B
+traceColors = [0.0  0.5  1.0  %Trace1 color
+               0.4  0.4  0.4  %Trace2 color
+               0.0  0.0  0.0  %Trace3 color
+               0.4  0.6  0.7
+               0.2  0.8  0.8
+               0.0  1.0  0.9];
+%set(groot,'defaultAxesColorOrder',traceColors)
+ax = gca;
+ax.ColorOrder = traceColors;
 hold off;
-plot(frespADC(1:end/2)/MHz,dbv(abs(ADCresp(1:end/2))),'b');hold on;
-plot(frespADC(1:end/2)/MHz,dbv(abs(TIAresp(1:end/2))),'g--');
-plot(frespADC(1:end/2)/MHz,dbv(abs(analogresp(1:end/2))),'r-');
-filterplot_fft(FINAL(1:end/2),fhbout(1:end/2),adc_Fs,'Composite Analog and Digital Filter Response',[0 Fp_Hz],pfir_stop);
-leg = legend('ADC resp','TIA resp','Composite Analog Response','Composite Response');
-leg.TextColor = 'red';
+hold on;
+zoom on;
+%plot(frespADC(1:end/2)/MHz,dbv(abs(ADCresp(1:end/2))),'b--');
+%plot(frespADC(1:end/2)/MHz,dbv(abs(TIAresp(1:end/2))),'g--');
+plot(frespADC(1:end/2)/MHz, dbv(abs(FINALDig(1:end/2))),'--');
+plot(frespADC(1:end/2)/MHz,dbv(abs(analogresp(1:end/2))),'--');
+filterplot_fft(FINAL(1:end/2),fhbout(1:end/2),adc_Fs,'Composite Analog and Digital Signal Chain Response',[0 Fp_Hz],pfir_stop_lines, 1, 'k');
+leg = legend('Composite Digital Response','Composite Analog Response','Composite Final Response');
+leg.TextColor = 'black';
 leg.Location = 'southwest';
-axis([0 adc_Fs/MHz/2 -140 5]);
-xlabel('MHz');
-ylabel('dB');
+axis([0 adc_Fs/MHz/2 -105 5]);
+grid on;
+xlabel('Baseband Frequency (MHz)');
+ylabel('Magnitude (dB)');
 
 %% update the mykonos_config file at thsi point and return
 
 rxorx_config.pfir_coefs = pfirb*2^15;
 rxorx_config.pfir_gain = 1/mult;
 rxorx_config.pfir_no_of_coefs = Np;
+rxorx_config.force_pfir = force_pfir;
 % update ADC codes here
 rxorx_config.ADC_codes = AdcCodes;
+rxorx_config.ADC_resp = ADCresp;
+rxorx_config.ADC_freq = frespADC;
 
 profile = rxorx_config;
 return

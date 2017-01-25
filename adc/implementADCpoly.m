@@ -4,7 +4,7 @@ function adc = implementADCpoly(adc)
 C=adc.C;
 R(1:7)=[1/adc.Gin 1./(adc.G(1,2)) 1./(adc.G(2,1)) 1./(adc.G(2,3)) 1./(adc.G(3,2)) 1./(adc.G(3,4)) 1./(adc.G(4,3))];
 Ia=adc.I;
-Ev = adc.ABCDc(end,end)*adc.FlashLSB/2*0.96;
+Ev = adc.ABCDc(end,end)*adc.FlashLSB/2;
 
 %Layout parasitic compensation
 Cple = [40e-15 44e-15 34e-15 32e-15];
@@ -19,7 +19,7 @@ Idfbmax=127.5e-6;
 Cunit=54e-15/4;
 Cfix = [76 40 28 16]*4;
 Cmax = 2.^[11 9 7 6] + Cfix - 1; %in units including fixed cap
-Chigh=1.16;
+Chigh=1.2;
 Clow=0.84;
 
 Gunit(1:size(R,2)) = 1/640e3;
@@ -27,7 +27,7 @@ Gunit([4 6]) = 1/1280e3;
 Gord = [1 1 2 2 3 3 4];
 Gin=1/500;  %We want Rin of 500 ohms per side
 Gmax = 2.^[11 11 12 10 11 10 11] - 1;  %Gmax(2) is actually 11 in analog, needs digital fix
-Glow=0.86;  %Need this much headroom for process
+Glow=0.8;  %Need this much headroom for process CHANGED FROM 0.86->0.8 07-21-2016
 
 Rv=200;
 
@@ -36,7 +36,7 @@ Ca = C-Cple;
 Ga = 1./(abs(R)-Rple);
 
 %Increase G's and I's to meet minimum cap requirements if necessary
-Cminsc = max(Cfix./(Ca./(Cunit*Chigh))*1.05,1);  %Cminsc>1 if a cap is below minimum
+Cminsc = max(Cfix./(Ca./(Cunit*Chigh)),1);  %Cminsc>1 if a cap is below minimum
 Ca = Ca.*Cminsc;
 Ga = Ga.*Cminsc(Gord);
 Ia = Ia.*Cminsc;
@@ -64,8 +64,8 @@ Iq = floor(Ia/Iunit+1e-9)*Iunit; %Floor to avoid exceeding G/C limits
 Iscq = Iq./Ia; %Stage current QE to compensate in G/C
 Icode = round(Iq/Iunit);
 
-%Limit quantization compensation to 5%
-Iscq=max(Iscq,0.95);
+%Limit quantization compensation to 0% 07-21-2016 - THIS ATE AT MIN CAP MARGIN
+Iscq=max(Iscq,1);
 scale = ascale.*Iscq;    %Scale including quantization
 
 %Scale and squantize Cs
@@ -82,6 +82,8 @@ Gcode = round(abs(Gq./Gunit));
 
 %Find DFB current
 Idfb = -Ev/Rv;    
+% Idfb = Idfb*0.96; %Old code
+Idfb=Idfb-Icode(adc.order)*2e-6*0.19; %New DFB code
 Iq(:,5) = round(Idfb/Idfbunit)*Idfbunit;
 Icode(:,5) = round(Iq(:,5)/Idfbunit);
 

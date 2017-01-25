@@ -9,7 +9,7 @@ function [ADCSTF, fresp, AdcCodes] = MykonosADCResponse(fp, fftlen, Fs);
 
 plotresp = 0;
 
-MHz = 1e6
+MHz = 1e6;
 
 adc.Fs = Fs;
 adc.F0 = 0;

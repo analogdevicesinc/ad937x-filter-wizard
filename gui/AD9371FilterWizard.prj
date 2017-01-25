@@ -1,0 +1,198 @@
+<deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
+  <configuration build-checksum="2718947792" file="C:\Users\abaskar\Documents\mykprofilegen\code\gui\AD9371FilterWizard.prj" location="C:\Users\abaskar\Documents\mykprofilegen\code\gui" name="AD9371FilterWizard" preferred-package-location="C:\git\code.analog.com\mykprofilegen\code\gui\AD9371FilterWizard\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="MATLAB Compiler for Standalone Applications">
+    <param.appname>AD9371FilterWizard</param.appname>
+    <param.icon />
+    <param.icons />
+    <param.version>1.7</param.version>
+    <param.authnamewatermark>Analog Devices</param.authnamewatermark>
+    <param.email />
+    <param.company>Analog Devices</param.company>
+    <param.summary />
+    <param.description />
+    <param.screenshot>${PROJECT_ROOT}\AD9371-Filter-Wizard-Splash-Screen.jpg</param.screenshot>
+    <param.guid />
+    <param.installpath.string>\Analog Devices\AD9371_Filter_Wizard\</param.installpath.string>
+    <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
+    <param.logo />
+    <param.install.notes />
+    <param.intermediate>${PROJECT_ROOT}\AD9371FilterWizard\for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}\AD9371FilterWizard\for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}\AD9371FilterWizard\for_redistribution</param.output>
+    <param.enable.clean.build>false</param.enable.clean.build>
+    <param.user.defined.mcr.options />
+    <param.embed.ctf>true</param.embed.ctf>
+    <param.server.ctf>${PROJECT_ROOT}\AD9371FilterWizard\for_testing\.ctf</param.server.ctf>
+    <param.server.readme>${PROJECT_ROOT}\AD9371FilterWizard\for_testing\readme.txt</param.server.readme>
+    <param.target.type>subtarget.standalone</param.target.type>
+    <param.support.packages />
+    <param.required.mcr.products>
+      <item>35000</item>
+      <item>35001</item>
+    </param.required.mcr.products>
+    <param.web.mcr>true</param.web.mcr>
+    <param.package.mcr>false</param.package.mcr>
+    <param.no.mcr>false</param.no.mcr>
+    <param.web.mcr.name>MyAppInstaller_web</param.web.mcr.name>
+    <param.package.mcr.name>MyAppInstaller_mcr</param.package.mcr.name>
+    <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
+    <param.windows.command.prompt>true</param.windows.command.prompt>
+    <param.create.log>false</param.create.log>
+    <param.log.file />
+    <unset>
+      <param.icon />
+      <param.icons />
+      <param.email />
+      <param.summary />
+      <param.description />
+      <param.guid />
+      <param.installpath.combo />
+      <param.logo />
+      <param.install.notes />
+      <param.intermediate />
+      <param.files.only />
+      <param.output />
+      <param.enable.clean.build />
+      <param.user.defined.mcr.options />
+      <param.embed.ctf />
+      <param.server.ctf />
+      <param.server.readme />
+      <param.target.type />
+      <param.support.packages />
+      <param.web.mcr />
+      <param.package.mcr />
+      <param.no.mcr />
+      <param.web.mcr.name />
+      <param.package.mcr.name />
+      <param.no.mcr.name />
+      <param.windows.command.prompt />
+      <param.create.log />
+      <param.log.file />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}\gui.m</file>
+    </fileset.main>
+    <fileset.resources>
+      <file>C:\git\code.analog.com\mykprofilegen\code\adc\ABCDpolydata.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\adc\designADCpoly.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\adc\evalADCpoly.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\adc\evalpoly.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\adc\implementADCpoly.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\adc\insertBits.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\adc\makeADCpoly.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\adc\MykonosADCResponse.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\adc\openbytes.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\common\bround.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\common\filterplot.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\common\filterplot_fft.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\delsig_public\calculateTF.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\delsig_public\dbp.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\delsig_public\dbv.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\delsig_public\evalMixedTF.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\delsig_public\evalRPoly.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\delsig_public\evalTF.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\delsig_public\evalTFP.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\delsig_public\mapCtoD.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\delsig_public\padb.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\delsig_public\padr.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\delsig_public\partitionABCD.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\delsig_public\undbv.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\profilegen\generate_LPBK_ADC_codes.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\profilegen\generate_Mykonos_datapath_config.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\profilegen\generate_RxORxPFIR.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\profilegen\generate_TxPFIR.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\profilegen\init_Mykonos_config.m</file>
+      <file>C:\git\code.analog.com\mykprofilegen\code\profilegen\writeProfilesToFile.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\ABCDpolydata.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\designADCpoly.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\evalADCpoly.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\evalpoly.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\implementADCpoly.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\insertBits.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\makeADCpoly.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\MykonosADCResponse.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\adc\openbytes.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\common\bround.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\common\filterplot.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\common\filterplot_fft.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\calculateTF.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\dbp.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\dbv.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\ds_f1f2.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\ds_optzeros.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\ds_synNTFobj1.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\evalMixedTF.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\evalRPoly.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\evalTF.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\evalTFP.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\mapCtoD.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\padb.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\padr.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\padt.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\partitionABCD.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\realizeNTF.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\rmsGain.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\stuffABCD.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\synthesizeNTF.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\synthesizeNTF0.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\synthesizeNTF1.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\delsig_public\undbv.m</file>
+      <file>${PROJECT_ROOT}\ADILogo.png</file>
+      <file>${PROJECT_ROOT}\Advanced.fig</file>
+      <file>${PROJECT_ROOT}\Advanced.m</file>
+      <file>${PROJECT_ROOT}\gui.fig</file>
+      <file>${PROJECT_ROOT}\RadioVerse-RGB-FullColor.png</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\profilegen\AD9528_rates.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\profilegen\generate_LPBK_ADC_codes.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\profilegen\generate_Mykonos_datapath_config.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\profilegen\generate_RxORxPFIR.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\profilegen\generate_TxPFIR.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\profilegen\init_Mykonos_config.m</file>
+      <file>C:\Users\abaskar\Documents\mykprofilegen\code\profilegen\writeProfilesToFile.m</file>
+    </fileset.resources>
+    <fileset.package />
+    <build-deliverables>
+      <file location="${PROJECT_ROOT}\AD9371FilterWizard\for_testing" name="readme.txt" optional="true">C:\Users\abaskar\Documents\mykprofilegen\code\gui\AD9371FilterWizard\for_testing\readme.txt</file>
+      <file location="${PROJECT_ROOT}\AD9371FilterWizard\for_testing" name="AD9371FilterWizard.exe" optional="false">C:\Users\abaskar\Documents\mykprofilegen\code\gui\AD9371FilterWizard\for_testing\AD9371FilterWizard.exe</file>
+      <file location="${PROJECT_ROOT}\AD9371FilterWizard\for_testing" name="splash.png" optional="false">C:\Users\abaskar\Documents\mykprofilegen\code\gui\AD9371FilterWizard\for_testing\splash.png</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2014b</root>
+      <toolboxes>
+        <toolbox name="fixedpoint" />
+        <toolbox name="embeddedcoder" />
+        <toolbox name="matlabcoder" />
+      </toolboxes>
+      <toolbox>
+        <fixedpoint>
+          <enabled>true</enabled>
+        </fixedpoint>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>6.1</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

@@ -11,7 +11,7 @@ fftlen = 1024*8;           % FFT length
 MHz = 1e6;                  % MHz macro
 PD_Amp_fc = 600*MHz;        % PD amplifier corner frequency            
 postPD_fc = 890*MHz;        % Post PD amplifier corner frequency
-opt_for_dac_image = 1;      % Pushes BBF corner frequency further out to permit easier computation
+opt_for_dac_image = 0;      % Pushes BBF corner frequency further out to permit easier computation
 bands = 2;                  % Passband and stopband
 
 %% Input Configuration Parameters
@@ -31,8 +31,8 @@ debugplot = 0;              % Switch to enable plotting interim checks for debug
 % Real pole Fc >= 187 MHz
 
 %% DAC Fs Rate and BBF Fc Calculation
-if Fp < 10*MHz
-    BBF_fc = 10*MHz;
+if Fp < 20*MHz
+    BBF_fc = 20*MHz;
 elseif Fp > 125*MHz
     BBF_fc = 125*MHz;
 else
@@ -49,10 +49,12 @@ if opt_for_dac_image == 1
 end
 
 %% Real Pole Corner Frequency Calculation
-if Fp > 92*MHz
-    prePD_rp_fc = Fp*2;
-else
+if Fp*2 < 92*MHz
     prePD_rp_fc = 92*MHz;
+elseif Fp*2 > 187*MHz
+    prePD_rp_fc = 187*MHz;
+else
+    prePD_rp_fc = Fp*2;
 end
 
 freqgrid = linspace(0,Fsdac,fftlen);
@@ -95,6 +97,7 @@ if thb2_en == 1
     [THB1,f1] = freqz(thb1,1,fftlen/2,'whole');
     THB1UP = [THB1; (THB1)];
     [THB2,f2] = freqz(thb2,1,fftlen,'whole');
+    hDig = transpose(THB1UP).*transpose(THB2);
     finalresp = transpose(THB1UP).*transpose(THB2).*analog;
     
     if debugplot == 1
@@ -116,6 +119,7 @@ if thb2_en == 1
     end
 else
     [THB1,f1] = freqz(thb1,1,fftlen,'whole');
+    hDig = transpose(THB1);
     finalresp = transpose(THB1).*analog;
     
     if debugplot == 1
@@ -200,7 +204,7 @@ Hd = design(d,'equiripple','B1Weights',wt_pb,'B2Weights',wt_sb,'SystemObject',fa
 pfir = Hd.Numerator;
 
 if N == 15
-    Np = 16
+    Np = 16;
     pfir = [pfir 0];
 else
     Np = N;
@@ -246,6 +250,9 @@ if debugplot == 1
     ylabel('dB');
 end
 
+%% Final Composite Digital Respose
+FINALdig = OUT .* transpose(hDig);
+
 %% Final Composite Response Plot
 FINAL = OUT.*transpose(finalresp);
 
@@ -257,25 +264,39 @@ else
     cla;
     
 end
+              %R    G    B
+traceColors = [0.0  0.5  1.0  %Trace1 color
+               0.4  0.4  0.4  %Trace2 color
+               0.0  0.0  0.0  %Trace3 color
+               0.4  0.6  0.7
+               0.2  0.8  0.8
+               0.0  1.0  0.9];
+%set(groot,'defaultAxesColorOrder',traceColors)
+ax = gca;
+ax.ColorOrder = traceColors;
 hold off;
-plot(freqplot,dbv(abs(dac)),'y');
 hold on;
-plot(freqplot,dbv(abs(BBF_resp)));
-plot(freqplot,dbv(abs(rp_resp)),'k');
+
+%plot(freqplot,dbv(abs(dac)),'y');
+%plot(freqplot,dbv(abs(BBF_resp)));
+%plot(freqplot,dbv(abs(rp_resp)),'k');
 %plot(freqplot,dbv(abs(PDAmp_resp)),'r');
 %plot(freqplot,dbv(abs(postPD_resp)),'g');
-plot(freqplot,dbv(abs(analog)),'c');
-axis([0 Fsdac/MHz -50 5]);
-xlabel('MHz');
-ylabel('dB');
+%plot(freqplot,dbv(abs(OUT)), '--');
+plot(freqplot,dbv(abs(FINALdig)), '--');
+plot(freqplot,dbv(abs(analog)),'--');
 plot(freqplot,dbv(abs(FINAL)));
-grid;
-legend('DAC','BBF','Real Pole','Analog','Composite');
+xlabel('Baseband Frequency (MHz)');
+ylabel('Magnitude (dB)');
 
-axis([0 Fsdac/MHz -100 2]);
-title('Composite Analog and Digital Signal Chain Response')
-xlabel('MHz');
-ylabel('dB');
+grid on;
+zoom on;
+leg = legend('Composite Digital Response','Composite Analog Response','Composite Final Response');
+leg.TextColor = 'black';
+leg.Location = 'southwest';
+axis([0 Fsdac/MHz -100 10]);
+title('Composite Analog and Digital Signal Chain Response');
+
 
 %axis([0 Fspfir/2/MHz -1.5 1.5]);
 passbandvals = abs(FINAL(1:pbendfreq));
@@ -306,6 +327,8 @@ pfirb = bround(pfir*mult,15);
 tx_config.pfir_coefs = pfirb*2^15;
 tx_config.pfir_gain = mult;
 tx_config.pfir_no_of_coefs = Np;
+tx_config.real_pole_fc = prePD_rp_fc/MHz;
+tx_config.BBF_fc = BBF_fc/MHz;
 profile = tx_config;
 
 return

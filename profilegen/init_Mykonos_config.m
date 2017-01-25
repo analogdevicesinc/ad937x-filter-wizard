@@ -14,11 +14,13 @@ Mykonos_config.Tx.thb2_enable = 0;
 Mykonos_config.Tx.PFIR_interp = 1;
 Mykonos_config.Tx.pfir_no_of_coefs = 32;
 Mykonos_config.Tx.pfir_gain = 1;        % gain can be [0 1 2 3]
-Mykonos_config.Tx.pfir_coefs = [0 0 0 0 0 0 0 1 0 0 0 0 0 0];
+Mykonos_config.Tx.pfir_coefs = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 ...
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
 Mykonos_config.Tx.real_pole_fc = 200;
 Mykonos_config.Tx.BBF_fc = 200;
 Mykonos_config.Tx.pfir_passband_weight = 1;
 Mykonos_config.Tx.pfir_stopband_weight = 1;
+
 
 
 Mykonos_config.Rx.output_rate_MHz = 122.88;
@@ -37,6 +39,8 @@ Mykonos_config.Rx.pfir_coefs = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
 Mykonos_config.Rx.pfir_passband_weight = 1;
 Mykonos_config.Rx.pfir_stopband_weight = 1;
+Mykonos_config.Rx.force_pfir = 0;
+Mykonos_config.Rx.Advanced = 0;
 
 
 Mykonos_config.ORx.output_rate_MHz = 245.76;
@@ -55,6 +59,9 @@ Mykonos_config.ORx.pfir_coefs = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
 Mykonos_config.ORx.pfir_passband_weight = 1;
 Mykonos_config.ORx.pfir_stopband_weight = 1;
+Mykonos_config.ORx.LPBK_ADC_codes = [0];
+Mykonos_config.ORx.force_pfir = 0;
+Mykonos_config.ORx.Advanced = 0;
 
 Mykonos_config.Snf.profileEnabled = 0;
 Mykonos_config.Snf.output_rate_MHz = 30.72;
@@ -72,6 +79,8 @@ Mykonos_config.Snf.pfir_coefs = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
 Mykonos_config.Snf.pfir_passband_weight = 1;
 Mykonos_config.Snf.pfir_stopband_weight = 1;
+Mykonos_config.Snf.force_pfir = 0;
+Mykonos_config.Snf.Advanced = 0;
 
 
 Mykonos_config.CLK.HS_DIG_CLK_rate_MHz = 245.76*5;
@@ -79,9 +88,16 @@ Mykonos_config.CLK.HS_CLK_divider = 4;          % [4,5]
 Mykonos_config.CLK.VCO_CLK_divider = 2;         % [1, 1.5, 2, 3]
 Mykonos_config.CLK.VCO_CLK_rate_MHz = 9830.4; 
 Mykonos_config.CLK.REF_CLK_rate_MHz = 61.44;    % REF_CLK rate needs to be b/w 10MHz and 80MHz
-Mykonos_config.CLK.DEV_CLK_rate_MHz = [245.76 122.88 61.44]; %updated by the profile generation
-Mykonos_config.CLK.selectedDEV_CLK_rate_MHz = 245.76; %Selected by user after generating profile, but before outputting profile file
-Mykonos_config.CLK.REF_CLK_divider = 2;         %[ 1, 2, 4]
+Mykonos_config.CLK.DEV_CLK_rate_MHz = 61.44*[1 2 4]; %updated by the profile generation
+Mykonos_config.CLK.selectedDEV_CLK_rate_MHz = 61.44; %Selected by user after generating profile, but before outputting profile file
+Mykonos_config.CLK.REF_CLK_divider = 1;
+Mykonos_config.CLK.VCOX_en = 0;
+Mykonos_config.CLK.VCOX_MHz = 61.44;
+Mykonos_config.CLK.VCOX_M1 = 3;
+Mykonos_config.CLK.VCOX_selected_index = 1;
+Mykonos_config.CLK.VCOX_N2 = 21;
+Mykonos_config.CLK.VCOX_out_div = 21;
+        
 
 end
 
